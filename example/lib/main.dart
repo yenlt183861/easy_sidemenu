@@ -1,291 +1,196 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'easy_sidemenu Demo',
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: false),
-      home: const MyHomePage(title: 'easy_sidemenu Demo'),
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+        useMaterial3: true,
+        // Register SideMenuThemeData so every SideMenu in the app
+        // inherits the same look without passing `theme:` each time.
+        extensions: const [
+          SideMenuThemeData(
+            displayMode: SideMenuDisplayMode.auto,
+            showHamburger: true,
+            selectedColor: Colors.lightBlue,
+            selectedIconColor: Colors.white,
+            selectedTitleStyle: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  PageController pageController = PageController();
-  SideMenuController sideMenu = SideMenuController();
+class _HomePageState extends State<HomePage> {
+  final _controller = SideMenuController();
+  final _pageController = PageController();
 
   @override
   void initState() {
-    sideMenu.addListener((index) {
-      pageController.jumpToPage(index);
-    });
     super.initState();
+    // Mirror page changes to the PageView.
+    _controller.addListener(() {
+      _pageController.jumpToPage(_controller.currentIndex);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
       body: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SideMenu(
-            controller: sideMenu,
-            style: SideMenuStyle(
-              // showTooltip: false,
-              displayMode: SideMenuDisplayMode.auto,
-              showHamburger: true,
-              hoverColor: Colors.blue[100],
-              selectedHoverColor: Colors.blue[100],
-              selectedColor: Colors.lightBlue,
-              selectedTitleTextStyle: const TextStyle(color: Colors.white),
-              selectedIconColor: Colors.white,
-              selectedTitleTextStyleExpandable:
-                  const TextStyle(color: Colors.lightBlue),
-              // decoration: BoxDecoration(
-              //   borderRadius: BorderRadius.all(Radius.circular(10)),
-              // ),
-              // backgroundColor: Colors.grey[200]
-            ),
+            controller: _controller,
             title: Column(
               children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxHeight: 150,
-                    maxWidth: 150,
-                  ),
-                  child: Image.asset(
-                    'assets/images/easy_sidemenu.png',
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    'easy_sidemenu',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                const Divider(
-                  indent: 8.0,
-                  endIndent: 8.0,
-                ),
+                const Divider(indent: 8, endIndent: 8),
               ],
             ),
             footer: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.lightBlue[50],
-                    borderRadius: BorderRadius.circular(12)),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-                  child: Text(
-                    'mohada',
-                    style: TextStyle(fontSize: 15, color: Colors.grey[800]),
-                  ),
+                  color: Colors.lightBlue.shade50,
+                  borderRadius: BorderRadius.circular(12),
                 ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                child: const Text('v1.0', style: TextStyle(fontSize: 13)),
               ),
             ),
-            items: <SideMenuItemType>[
+            items: [
               SideMenuItem(
                 title: 'Dashboard',
-                onTap: (index, _) {
-                  sideMenu.changePage(index);
-                },
                 icon: const Icon(Icons.home),
-                badgeContent: const Text(
-                  '3',
-                  style: TextStyle(color: Colors.white),
-                ),
-                tooltipContent: "This is a tooltip for Dashboard item",
+                badge: const Text('3',
+                    style: TextStyle(color: Colors.white, fontSize: 11)),
+                tooltipContent: 'Dashboard',
+                onTap: (i, c) => c.goTo(i),
               ),
               SideMenuItem(
                 title: 'Users',
-                onTap: (index, _) {
-                  sideMenu.changePage(index);
-                },
                 icon: const Icon(Icons.supervisor_account),
+                onTap: (i, c) => c.goTo(i),
               ),
               SideMenuExpansionItem(
-                title: "Expansion Item",
+                title: 'Expansion',
                 icon: const Icon(Icons.kitchen),
-                onTap: (index, _, isExpanded) =>
-                    {print('$index, expanded $isExpanded')},
+                onTap: (i, c, expanded) =>
+                    debugPrint('expansion $i expanded=$expanded'),
                 children: [
                   SideMenuItem(
-                    title: 'Expansion Item 1',
-                    onTap: (index, _) {
-                      sideMenu.changePage(index);
-                    },
+                    title: 'Sub-item 1',
                     icon: const Icon(Icons.home),
-                    badgeContent: const Text(
-                      '3',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    tooltipContent: "Expansion Item 1",
+                    onTap: (i, c) => c.goTo(i),
                   ),
                   SideMenuItem(
-                    title: 'Expansion Item 2',
-                    onTap: (index, _) {
-                      sideMenu.changePage(index);
-                    },
+                    title: 'Sub-item 2',
                     icon: const Icon(Icons.supervisor_account),
-                  )
+                    onTap: (i, c) => c.goTo(i),
+                  ),
                 ],
               ),
               SideMenuItem(
                 title: 'Files',
-                onTap: (index, _) {
-                  sideMenu.changePage(index);
-                },
                 icon: const Icon(Icons.file_copy_rounded),
                 trailing: Container(
-                    decoration: const BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.all(Radius.circular(6))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6.0, vertical: 3),
-                      child: Text(
-                        'New',
-                        style: TextStyle(fontSize: 11, color: Colors.grey[800]),
-                      ),
-                    )),
+                  decoration: const BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 6, vertical: 3),
+                  child: const Text('New',
+                      style: TextStyle(fontSize: 11)),
+                ),
+                onTap: (i, c) => c.goTo(i),
               ),
               SideMenuItem(
                 title: 'Download',
-                onTap: (index, _) {
-                  sideMenu.changePage(index);
-                },
                 icon: const Icon(Icons.download),
+                onTap: (i, c) => c.goTo(i),
               ),
-              SideMenuItem(
-                builder: (context, displayMode) {
-                  return const Divider(
-                    endIndent: 8,
-                    indent: 8,
-                  );
-                },
+              // Divider via custom builder — does not occupy a selectable slot.
+              const SideMenuItem(
+                builder: _dividerBuilder,
               ),
               SideMenuItem(
                 title: 'Settings',
-                onTap: (index, _) {
-                  sideMenu.changePage(index);
-                },
                 icon: const Icon(Icons.settings),
+                onTap: (i, c) => c.goTo(i),
               ),
-              // SideMenuItem(
-              //   onTap:(index, _){
-              //     sideMenu.changePage(index);
-              //   },
-              //   icon: const Icon(Icons.image_rounded),
-              // ),
-              // SideMenuItem(
-              //   title: 'Only Title',
-              //   onTap:(index, _){
-              //     sideMenu.changePage(index);
-              //   },
-              // ),
               const SideMenuItem(
                 title: 'Exit',
                 icon: Icon(Icons.exit_to_app),
               ),
             ],
           ),
-          const VerticalDivider(
-            width: 0,
-          ),
+          const VerticalDivider(width: 0),
           Expanded(
             child: PageView(
-              controller: pageController,
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Dashboard',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Users',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Expansion Item 1',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Expansion Item 2',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Files',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Download',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-
-                // this is for SideMenuItem with builder (divider)
-                const SizedBox.shrink(),
-
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Settings',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [
+                _Page('Dashboard'),
+                _Page('Users'),
+                _Page('Sub-item 1'),
+                _Page('Sub-item 2'),
+                _Page('Files'),
+                _Page('Download'),
+                SizedBox.shrink(), // divider slot
+                _Page('Settings'),
+                _Page('Exit'),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+Widget _dividerBuilder(BuildContext context, SideMenuDisplayMode mode) =>
+    const Divider(indent: 8, endIndent: 8);
+
+class _Page extends StatelessWidget {
+  const _Page(this.label);
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(label, style: const TextStyle(fontSize: 35)),
     );
   }
 }
