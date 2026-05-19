@@ -142,8 +142,7 @@ final _cardPreset = _Preset(
     selectedItemDecoration: const BoxDecoration(
       color: Color(0xFFEFF6FF),
       borderRadius: BorderRadius.all(Radius.circular(10)),
-      border: Border.fromBorderSide(
-          BorderSide(color: Color(0xFFBFDBFE))),
+      border: Border.fromBorderSide(BorderSide(color: Color(0xFFBFDBFE))),
     ),
     selectedIconColor: const Color(0xFF2563EB),
     selectedTitleStyle: const TextStyle(
@@ -156,8 +155,7 @@ final _cardPreset = _Preset(
         const TextStyle(color: Color(0xFF64748B), fontSize: 15),
     hoverColor: const Color(0xFFF8FAFC),
     itemBorderRadius: const BorderRadius.all(Radius.circular(10)),
-    itemOuterPadding:
-        const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+    itemOuterPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
     toggleColor: const Color(0xFF94A3B8),
     expansionArrowColor: const Color(0xFF94A3B8),
     expansionArrowOpenColor: const Color(0xFF2563EB),
@@ -324,8 +322,8 @@ class _HomePageState extends State<HomePage> {
       title: _SideMenuHeader(
         presetLabel: preset.label,
         isDark: isDark,
-        onNext: () => setState(
-            () => _presetIndex = (_presetIndex + 1) % _presets.length),
+        onNext: () =>
+            setState(() => _presetIndex = (_presetIndex + 1) % _presets.length),
       ),
       footer: isCard ? const _CardFooter() : _SideMenuFooter(isDark: isDark),
       items: [
@@ -562,7 +560,7 @@ class _CardFooter extends StatelessWidget {
           //     icon: Icons.keyboard_rounded,
           //     label: 'Shortcuts',
           //     color: Color(0xFF94A3B8)
-              // ),
+          // ),
           const SizedBox(height: 6),
           const SizedBox(height: 2),
           Container(
@@ -571,8 +569,7 @@ class _CardFooter extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: const Color(0xFFE2E8F0)),
             ),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: const Row(
               children: [
                 CircleAvatar(
@@ -632,8 +629,7 @@ class _CardAction extends StatelessWidget {
             Icon(icon, size: 17, color: color),
             const SizedBox(width: 10),
             Text(label,
-                style: const TextStyle(
-                    fontSize: 13, color: Color(0xFF475569))),
+                style: const TextStyle(fontSize: 13, color: Color(0xFF475569))),
           ],
         ),
       ),

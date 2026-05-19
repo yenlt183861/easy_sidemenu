@@ -103,8 +103,7 @@ class SideMenuScope extends InheritedNotifier<SideMenuScopeData> {
   });
 
   static SideMenuScopeData of(BuildContext context) {
-    final scope =
-        context.dependOnInheritedWidgetOfExactType<SideMenuScope>();
+    final scope = context.dependOnInheritedWidgetOfExactType<SideMenuScope>();
     assert(scope != null,
         'SideMenuScope.of() called outside a SideMenu widget tree.');
     return scope!.notifier!;

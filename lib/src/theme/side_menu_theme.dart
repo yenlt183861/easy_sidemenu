@@ -203,8 +203,7 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
       unselectedIconColor: unselectedIconColor ?? this.unselectedIconColor,
       iconSize: iconSize ?? this.iconSize,
       selectedTitleStyle: selectedTitleStyle ?? this.selectedTitleStyle,
-      unselectedTitleStyle:
-          unselectedTitleStyle ?? this.unselectedTitleStyle,
+      unselectedTitleStyle: unselectedTitleStyle ?? this.unselectedTitleStyle,
       itemHeight: itemHeight ?? this.itemHeight,
       itemBorderRadius: itemBorderRadius ?? this.itemBorderRadius,
       itemOuterPadding: itemOuterPadding ?? this.itemOuterPadding,
@@ -243,8 +242,8 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
       iconSize: lerpDouble(iconSize, other.iconSize, t)!,
       selectedTitleStyle:
           TextStyle.lerp(selectedTitleStyle, other.selectedTitleStyle, t),
-      unselectedTitleStyle: TextStyle.lerp(
-          unselectedTitleStyle, other.unselectedTitleStyle, t),
+      unselectedTitleStyle:
+          TextStyle.lerp(unselectedTitleStyle, other.unselectedTitleStyle, t),
       itemHeight: lerpDouble(itemHeight, other.itemHeight, t)!,
       itemBorderRadius:
           BorderRadius.lerp(itemBorderRadius, other.itemBorderRadius, t)!,
@@ -257,8 +256,8 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
       toggleColor: Color.lerp(toggleColor, other.toggleColor, t),
       expansionArrowColor:
           Color.lerp(expansionArrowColor, other.expansionArrowColor, t),
-      expansionArrowOpenColor: Color.lerp(
-          expansionArrowOpenColor, other.expansionArrowOpenColor, t),
+      expansionArrowOpenColor:
+          Color.lerp(expansionArrowOpenColor, other.expansionArrowOpenColor, t),
     );
   }
 

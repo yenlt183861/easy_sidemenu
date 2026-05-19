@@ -55,7 +55,8 @@ class _SideMenuExpansionItemState extends State<SideMenuExpansionItem> {
   late bool _expanded = widget.initiallyExpanded;
 
   Widget _buildIcon(SideMenuThemeData theme) {
-    if (widget.icon == null) return widget.iconWidget ?? const SizedBox.shrink();
+    if (widget.icon == null)
+      return widget.iconWidget ?? const SizedBox.shrink();
     final color = _expanded
         ? theme.selectedIconColor ?? Colors.black
         : theme.unselectedIconColor ?? Colors.black54;
@@ -94,9 +95,7 @@ class _SideMenuExpansionItemState extends State<SideMenuExpansionItem> {
                   )
                 : const SizedBox.shrink(),
             trailing: Icon(
-              _expanded
-                  ? Icons.arrow_drop_down_circle
-                  : Icons.arrow_drop_down,
+              _expanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
               color: _expanded
                   ? theme.expansionArrowOpenColor
                   : theme.expansionArrowColor,

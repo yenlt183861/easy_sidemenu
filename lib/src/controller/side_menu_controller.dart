@@ -18,8 +18,7 @@ import 'package:flutter/foundation.dart';
 /// }
 /// ```
 class SideMenuController extends ChangeNotifier {
-  SideMenuController({int initialIndex = 0})
-      : _currentIndex = initialIndex;
+  SideMenuController({int initialIndex = 0}) : _currentIndex = initialIndex;
 
   int _currentIndex;
 

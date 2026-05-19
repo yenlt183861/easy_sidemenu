@@ -29,7 +29,10 @@ class SideMenuItem extends SideMenuItemBase {
     this.tooltipContent,
     this.builder,
   }) : assert(
-          title != null || icon != null || iconWidget != null || builder != null,
+          title != null ||
+              icon != null ||
+              iconWidget != null ||
+              builder != null,
           'Provide at least one of title, icon, iconWidget, or builder.',
         );
 
@@ -72,9 +75,8 @@ class _SideMenuItemState extends State<SideMenuItem> {
       return theme.selectedItemDecoration!;
     }
     final color = switch ((selected, _hovered)) {
-      (true, true) => theme.selectedHoverColor ??
-          theme.selectedColor ??
-          Colors.transparent,
+      (true, true) =>
+        theme.selectedHoverColor ?? theme.selectedColor ?? Colors.transparent,
       (true, false) => theme.selectedColor ?? Colors.transparent,
       (false, true) => theme.hoverColor ?? Colors.transparent,
       _ => Colors.transparent,
@@ -141,10 +143,10 @@ class _SideMenuItemState extends State<SideMenuItem> {
               child: Padding(
                 padding: theme.itemOuterPadding,
                 child: Tooltip(
-                  message: (mode == SideMenuDisplayMode.compact &&
-                          theme.showTooltip)
-                      ? widget.tooltipContent ?? widget.title ?? ''
-                      : '',
+                  message:
+                      (mode == SideMenuDisplayMode.compact && theme.showTooltip)
+                          ? widget.tooltipContent ?? widget.title ?? ''
+                          : '',
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     height: theme.itemHeight,

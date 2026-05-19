@@ -203,8 +203,8 @@ class _SideMenuState extends State<SideMenu> {
       height: double.infinity,
       decoration: theme.menuDecoration ??
           BoxDecoration(
-            color: theme.backgroundColor ??
-                Theme.of(context).colorScheme.surface,
+            color:
+                theme.backgroundColor ?? Theme.of(context).colorScheme.surface,
           ),
       child: Stack(
         children: [
@@ -213,15 +213,13 @@ class _SideMenuState extends State<SideMenu> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (theme.showHamburger) hamburgerButton,
-                if (isCompact && widget.showToggle)
-                  const SizedBox(height: 42),
+                if (isCompact && widget.showToggle) const SizedBox(height: 42),
                 if (widget.title != null) widget.title!,
                 ..._buildItems(),
               ],
             ),
           ),
-          if (widget.footer != null &&
-              (!isCompact || widget.alwaysShowFooter))
+          if (widget.footer != null && (!isCompact || widget.alwaysShowFooter))
             Align(
               alignment: Alignment.bottomCenter,
               child: widget.footer!,

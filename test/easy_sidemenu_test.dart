@@ -143,8 +143,7 @@ void main() {
       await tester.pumpAndSettle();
       // .first = the outermost AnimatedContainer (the menu itself); inner ones
       // belong to SideMenuItem hover decorations.
-      final width =
-          tester.getSize(find.byType(AnimatedContainer).first).width;
+      final width = tester.getSize(find.byType(AnimatedContainer).first).width;
       expect(width, compactWidth);
     });
 
@@ -159,8 +158,7 @@ void main() {
         ),
       )));
       await tester.pumpAndSettle();
-      final width =
-          tester.getSize(find.byType(AnimatedContainer).first).width;
+      final width = tester.getSize(find.byType(AnimatedContainer).first).width;
       expect(width, openWidth);
     });
 
@@ -176,8 +174,7 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      final w1 =
-          tester.getSize(find.byType(AnimatedContainer).first).width;
+      final w1 = tester.getSize(find.byType(AnimatedContainer).first).width;
       expect(w1, compactWidth);
 
       await tester.tap(find.byType(SideMenuItem).first);
@@ -185,8 +182,7 @@ void main() {
       await tester.tap(find.byType(ElevatedButton));
       await tester.pumpAndSettle();
 
-      final w2 =
-          tester.getSize(find.byType(AnimatedContainer).first).width;
+      final w2 = tester.getSize(find.byType(AnimatedContainer).first).width;
       expect(w2, compactWidth);
 
       await tester.pumpWidget(const Placeholder());
@@ -308,10 +304,8 @@ void main() {
             icon: Icon(Icons.folder),
             title: 'Group',
             children: [
-              SideMenuItem(
-                  icon: Icon(Icons.file_copy), title: 'Child 1'),
-              SideMenuItem(
-                  icon: Icon(Icons.file_copy), title: 'Child 2'),
+              SideMenuItem(icon: Icon(Icons.file_copy), title: 'Child 1'),
+              SideMenuItem(icon: Icon(Icons.file_copy), title: 'Child 2'),
             ],
           ),
         ],
@@ -323,8 +317,7 @@ void main() {
       expect(find.text('Child 2'), findsOneWidget);
     });
 
-    testWidgets('initiallyExpanded shows children immediately',
-        (tester) async {
+    testWidgets('initiallyExpanded shows children immediately', (tester) async {
       final controller = SideMenuController();
       await tester.pumpWidget(_wrap(SideMenu(
         controller: controller,
@@ -390,8 +383,7 @@ void main() {
   // ── SideMenuItem builder ────────────────────────────────────────────────────
 
   group('SideMenuItem builder', () {
-    testWidgets('custom builder receives current display mode',
-        (tester) async {
+    testWidgets('custom builder receives current display mode', (tester) async {
       final controller = SideMenuController();
       SideMenuDisplayMode? receivedMode;
 
@@ -403,8 +395,7 @@ void main() {
           SideMenuItem(
             builder: (ctx, mode) {
               receivedMode = mode;
-              return const SizedBox(
-                  key: Key('custom'), width: 10, height: 10);
+              return const SizedBox(key: Key('custom'), width: 10, height: 10);
             },
           ),
         ],
