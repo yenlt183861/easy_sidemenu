@@ -23,7 +23,7 @@ A highly customisable side navigation menu for Flutter. Supports Material 3 them
 
 | Open | Compact |
 |------|---------|
-| ![Open](images/Screenshot_1.jpeg) | ![Compact](images/Screenshot_2.jpeg) |
+| ![Open](images/Screenshot_1.png) | ![Compact](images/Screenshot_2.png) |
 
 | Auto |
 |------|
@@ -32,18 +32,6 @@ A highly customisable side navigation menu for Flutter. Supports Material 3 them
 ## Live demo
 
 [https://jamalianpour.github.io/easy_sidemenu](https://jamalianpour.github.io/easy_sidemenu)
-
----
-
-## Requirements
-
-| | Minimum |
-|---|---|
-| Dart SDK | 3.4.0 |
-| Flutter | 3.22.0 |
-| Android | API 21 |
-| iOS | 12.0 |
-| macOS / Windows / Linux / Web | ✓ |
 
 ---
 

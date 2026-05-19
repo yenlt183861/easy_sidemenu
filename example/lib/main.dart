@@ -406,6 +406,7 @@ class _HomePageState extends State<HomePage> {
             children: const [
               _Page('Dashboard', Icons.dashboard_rounded),
               _Page('Users', Icons.people_rounded),
+              SizedBox.shrink(),
               _Page('Active projects', Icons.circle),
               _Page('Archived projects', Icons.circle_outlined),
               _Page('Files', Icons.folder_copy_rounded),
@@ -549,18 +550,19 @@ class _CardFooter extends StatelessWidget {
               icon: Icons.add_circle_outline_rounded,
               label: 'New Project',
               color: Color(0xFF2563EB)),
-          const _CardAction(
-              icon: Icons.search_rounded,
-              label: 'Search',
-              color: Color(0xFF64748B)),
-          const _CardAction(
-              icon: Icons.people_outline_rounded,
-              label: 'Invite teammate',
-              color: Color(0xFF64748B)),
-          const _CardAction(
-              icon: Icons.keyboard_rounded,
-              label: 'Shortcuts',
-              color: Color(0xFF94A3B8)),
+          // const _CardAction(
+          //     icon: Icons.search_rounded,
+          //     label: 'Search',
+          //     color: Color(0xFF64748B)),
+          // const _CardAction(
+          //     icon: Icons.people_outline_rounded,
+          //     label: 'Invite teammate',
+          //     color: Color(0xFF64748B)),
+          // const _CardAction(
+          //     icon: Icons.keyboard_rounded,
+          //     label: 'Shortcuts',
+          //     color: Color(0xFF94A3B8)
+              // ),
           const SizedBox(height: 6),
           const SizedBox(height: 2),
           Container(
