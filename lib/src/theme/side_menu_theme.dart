@@ -32,6 +32,8 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
     this.openWidth = 300,
     this.compactWidth = 70,
     this.collapseWidth = 600,
+    this.menuDecoration,
+    this.backdropSigma,
     this.backgroundColor,
     this.selectedColor,
     this.hoverColor,
@@ -41,10 +43,10 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
     this.iconSize = 24,
     this.selectedTitleStyle,
     this.unselectedTitleStyle,
+    this.selectedItemDecoration,
     this.itemHeight = 50,
     this.itemBorderRadius = const BorderRadius.all(Radius.circular(8)),
-    this.itemOuterPadding =
-        const EdgeInsets.symmetric(horizontal: 5),
+    this.itemOuterPadding = const EdgeInsets.symmetric(horizontal: 5),
     this.itemInnerSpacing = 8,
     this.showTooltip = true,
     this.showHamburger = false,
@@ -65,6 +67,48 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
   /// Screen width (px) at which [SideMenuDisplayMode.auto] switches from
   /// open → compact.
   final double collapseWidth;
+
+  // ── Decoration ───────────────────────────────────────────────────────
+  /// Full decoration for the menu container.
+  ///
+  /// When set, this takes precedence over [backgroundColor]. Use it for
+  /// gradients, shadows, or borders on the menu itself:
+  ///
+  /// ```dart
+  /// menuDecoration: BoxDecoration(
+  ///   gradient: LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+  ///   boxShadow: [BoxShadow(blurRadius: 12, color: Colors.black26)],
+  /// )
+  /// ```
+  final BoxDecoration? menuDecoration;
+
+  /// Blur sigma applied behind the menu via [BackdropFilter].
+  ///
+  /// Set this to create a glassmorphism / frosted-glass effect. The menu
+  /// container must have a semi-transparent [menuDecoration] or
+  /// [backgroundColor] for the blur to be visible.
+  ///
+  /// ```dart
+  /// SideMenuThemeData(
+  ///   backdropSigma: 12,
+  ///   menuDecoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15)),
+  /// )
+  /// ```
+  final double? backdropSigma;
+
+  /// Full decoration for the selected item.
+  ///
+  /// When set, this replaces the default `BoxDecoration(color: selectedColor,
+  /// borderRadius: itemBorderRadius)` for selected items. Useful for a
+  /// left-border indicator, gradient pill, or drop shadow:
+  ///
+  /// ```dart
+  /// selectedItemDecoration: BoxDecoration(
+  ///   color: Colors.blue.shade50,
+  ///   border: Border(left: BorderSide(color: Colors.blue, width: 3)),
+  /// )
+  /// ```
+  final BoxDecoration? selectedItemDecoration;
 
   // ── Colors ───────────────────────────────────────────────────────────
   /// Menu background. Defaults to [ColorScheme.surface].
@@ -120,7 +164,10 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
     double? openWidth,
     double? compactWidth,
     double? collapseWidth,
+    BoxDecoration? menuDecoration,
+    double? backdropSigma,
     Color? backgroundColor,
+    BoxDecoration? selectedItemDecoration,
     Color? selectedColor,
     Color? hoverColor,
     Color? selectedHoverColor,
@@ -144,7 +191,11 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
       openWidth: openWidth ?? this.openWidth,
       compactWidth: compactWidth ?? this.compactWidth,
       collapseWidth: collapseWidth ?? this.collapseWidth,
+      menuDecoration: menuDecoration ?? this.menuDecoration,
+      backdropSigma: backdropSigma ?? this.backdropSigma,
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      selectedItemDecoration:
+          selectedItemDecoration ?? this.selectedItemDecoration,
       selectedColor: selectedColor ?? this.selectedColor,
       hoverColor: hoverColor ?? this.hoverColor,
       selectedHoverColor: selectedHoverColor ?? this.selectedHoverColor,
@@ -175,7 +226,12 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
       openWidth: lerpDouble(openWidth, other.openWidth, t)!,
       compactWidth: lerpDouble(compactWidth, other.compactWidth, t)!,
       collapseWidth: lerpDouble(collapseWidth, other.collapseWidth, t)!,
+      menuDecoration:
+          BoxDecoration.lerp(menuDecoration, other.menuDecoration, t),
+      backdropSigma: lerpDouble(backdropSigma, other.backdropSigma, t),
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
+      selectedItemDecoration: BoxDecoration.lerp(
+          selectedItemDecoration, other.selectedItemDecoration, t),
       selectedColor: Color.lerp(selectedColor, other.selectedColor, t),
       hoverColor: Color.lerp(hoverColor, other.hoverColor, t),
       selectedHoverColor:
@@ -245,7 +301,10 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
           openWidth == other.openWidth &&
           compactWidth == other.compactWidth &&
           collapseWidth == other.collapseWidth &&
+          menuDecoration == other.menuDecoration &&
+          backdropSigma == other.backdropSigma &&
           backgroundColor == other.backgroundColor &&
+          selectedItemDecoration == other.selectedItemDecoration &&
           selectedColor == other.selectedColor &&
           hoverColor == other.hoverColor &&
           selectedHoverColor == other.selectedHoverColor &&
@@ -270,7 +329,10 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
         openWidth,
         compactWidth,
         collapseWidth,
+        menuDecoration,
+        backdropSigma,
         backgroundColor,
+        selectedItemDecoration,
         selectedColor,
         hoverColor,
         selectedHoverColor,

@@ -1,287 +1,437 @@
-<div align="center" style="text-align:center">
-<h1 align="center">Easy Sidemenu</h1>
-<img align="center" src="https://raw.githubusercontent.com/Jamalianpour/easy_sidemenu/master/images/logo.png" alt="logo" height=170/>
-</br>
-<a href="https://github.com/Jamalianpour/easy_sidemenu/license">
-    <img alt="GitHub" src="https://img.shields.io/github/license/Jamalianpour/easy_sidemenu">
+<div align="center">
+<h1>Easy Sidemenu</h1>
+<img src="https://raw.githubusercontent.com/Jamalianpour/easy_sidemenu/master/images/logo.png" alt="logo" height="170"/>
+<br/><br/>
+
+<a href="https://github.com/Jamalianpour/easy_sidemenu/blob/master/LICENSE">
+  <img alt="License" src="https://img.shields.io/github/license/Jamalianpour/easy_sidemenu">
 </a>
 <a href="https://pub.dev/packages/easy_sidemenu">
-   <img alt="Pub Version" src="https://img.shields.io/pub/v/easy_sidemenu.svg?longCache=true" />   
+  <img alt="Pub Version" src="https://img.shields.io/pub/v/easy_sidemenu.svg?longCache=true">
 </a>
-<a>
-    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Jamalianpour/easy_sidemenu">
+<a href="https://github.com/Jamalianpour/easy_sidemenu">
+  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Jamalianpour/easy_sidemenu">
 </a>
+
 </div>
 
-Easy sidemenu is An easy to use side menu (bar) for flutter that you can use for navigation in your application.
+A highly customisable side navigation menu for Flutter. Supports Material 3 theming, glassmorphism, floating card panels, expansion items, badges, and responsive auto-collapse — with zero external dependencies.
 
-Sidemenu is a menu that is usually located on the left or right of the page and can used for navigation or other things.
-Sidemenu is similar to bottom navigation bar but in the side of screen and usually used for larger screens.
+---
 
 ## Screenshots
 
-| Open                             | Compact                             |
-| -------------------------------- | ----------------------------------- |
+| Open | Compact |
+|------|---------|
 | ![Open](images/Screenshot_1.jpeg) | ![Compact](images/Screenshot_2.jpeg) |
 
-| Auto                              |
-| --------------------------------- |
+| Auto |
+|------|
 | ![Auto](images/easy_sidemenu.gif) |
 
-## Demo
+## Live demo
 
-You can see web demo here: [https://jamalianpour.github.io/easy_sidemenu](https://jamalianpour.github.io/easy_sidemenu)
+[https://jamalianpour.github.io/easy_sidemenu](https://jamalianpour.github.io/easy_sidemenu)
 
-## Usage
+---
 
-##### 1. add dependencies into you project pubspec.yaml file
+## Requirements
+
+| | Minimum |
+|---|---|
+| Dart SDK | 3.4.0 |
+| Flutter | 3.22.0 |
+| Android | API 21 |
+| iOS | 12.0 |
+| macOS / Windows / Linux / Web | ✓ |
+
+---
+
+## Getting started
+
+Add the dependency:
 
 ```yaml
 dependencies:
-  easy_sidemenu: ^0.7.1
+  easy_sidemenu: ^1.0.0
 ```
-
-Run `flutter packages get` in the root directory of your app.
-
-##### 2. import easy sidemenu lib
 
 ```dart
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 ```
 
-Now you can use `SideMenu` as a widget in your code.
+---
 
-##### 3. use SideMenu
-
-You must first define a list of items `SideMenuItemType` to display on `SideMenu`:
+## Basic usage
 
 ```dart
-List<SideMenuItemType> items = [
-  SideMenuItem(
-    title: 'Dashboard',
-    onTap: (index, _) {
-      sideMenu.changePage(index);
-    },
-    icon: Icon(Icons.home),
-    badgeContent: Text(
-      '3',
-      style: TextStyle(color: Colors.white),
-    ),
-  ),
-  SideMenuExpansionItem(
-    title: "Expansion Item",
-    icon: const Icon(Icons.kitchen),
-    onTap: (index, _, isExpanded) => {
-        print('$index, expanded $isExpanded')
-    },
-    children: [
-      SideMenuItem(
-        title: 'Expansion Item 1',
-        onTap: (index, _) {
-          sideMenu.changePage(index);
-        },
-        icon: const Icon(Icons.home),
+import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:flutter/material.dart';
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final _controller = SideMenuController();
+  final _pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Mirror selections to a PageView (or any router)
+    _controller.addListener(() {
+      _pageController.jumpToPage(_controller.currentIndex);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        children: [
+          SideMenu(
+            controller: _controller,
+            items: [
+              SideMenuItem(
+                title: 'Dashboard',
+                icon: const Icon(Icons.dashboard_rounded),
+                onTap: (index, controller) => controller.goTo(index),
+              ),
+              SideMenuItem(
+                title: 'Settings',
+                icon: const Icon(Icons.settings_rounded),
+                onTap: (index, controller) => controller.goTo(index),
+              ),
+            ],
+          ),
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [
+                Center(child: Text('Dashboard')),
+                Center(child: Text('Settings')),
+              ],
+            ),
+          ),
+        ],
       ),
-      SideMenuItem(
-        title: 'Expansion Item 2',
-        onTap: (index, _) {
-          sideMenu.changePage(index);
-        },
-        icon: const Icon(Icons.supervisor_account),
-      )
-    ],
-  ),
-  SideMenuItem(
-    title: 'Exit',
-    onTap: () {},
-    icon: Icon(Icons.exit_to_app),
-  ),
-];
+    );
+  }
+}
 ```
 
-###### custom builder:
+---
 
-Instead of `title` and `icon` in `SideMenuItem` can use `builder` to create your customize items:
+## Items
+
+### `SideMenuItem`
+
+```dart
+SideMenuItem(
+  title: 'Dashboard',
+  icon: const Icon(Icons.dashboard_rounded),
+  // Optional badge overlaid on the icon
+  badge: const Text('3', style: TextStyle(color: Colors.white, fontSize: 10)),
+  // Tooltip shown in compact mode
+  tooltipContent: 'Dashboard',
+  // Widget shown at the trailing edge in open mode
+  trailing: const Icon(Icons.chevron_right, size: 16),
+  onTap: (index, controller) => controller.goTo(index),
+),
+```
+
+#### Custom builder
+
+Replace the default layout entirely for a single item:
 
 ```dart
 SideMenuItem(
   builder: (context, displayMode) {
-    return Container();
+    return const Divider(height: 24, indent: 8, endIndent: 8);
   },
-  onTap: () {},
 ),
 ```
 
-After that you need to warp your main page to a `row` and then add `SideMenu` as first child of that, like below:
+### `SideMenuExpansionItem`
 
 ```dart
-PageController pageController = PageController();
-SideMenuController sideMenu = SideMenuController();
-
-@override
-void initState() {
-  // Connect SideMenuController and PageController together
-  sideMenu.addListener((index) {
-    pageController.jumpToPage(index);
-  });
-  super.initState();
-}
-
-@override
-Widget build(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      SideMenu(
-        // Page controller to manage a PageView
-        controller: sideMenu,
-        // Will shows on top of all items, it can be a logo or a Title text
-        title: Image.asset('assets/images/easy_sidemenu.png'),
-        // Will show on bottom of SideMenu when displayMode was SideMenuDisplayMode.open
-        footer: Text('demo'),
-        // Notify when display mode changed
-        onDisplayModeChanged: (mode) {
-          print(mode);
-        },
-        // List of SideMenuItem to show them on SideMenu
-        items: items,
-      ),
-      Expanded(
-        child: PageView(
-          controller: pageController,
-          children: [
-            Container(
-              child: Center(
-                child: Text('Dashboard'),
-              ),
-            ),
-            Container(
-              child: Center(
-                child: Text('Expansion Item 1'),
-              ),
-            ),
-            Container(
-              child: Center(
-                child: Text('Expansion Item 2'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
-```
-
-### Style
-
-you can change style of side menu with `SideMenuStyle` :
-
-```dart
-SideMenuStyle(
-  displayMode: SideMenuDisplayMode.auto,
-  decoration: BoxDecoration(),
-  openSideMenuWidth: 200,
-  compactSideMenuWidth: 40,
-  hoverColor: Colors.blue[100],
-  selectedColor: Colors.lightBlue,
-  selectedIconColor: Colors.white,
-  unselectedIconColor: Colors.black54,
-  backgroundColor: Colors.grey,
-  selectedTitleTextStyle: TextStyle(color: Colors.white),
-  unselectedTitleTextStyle: TextStyle(color: Colors.black54),
-  iconSize: 20,
-  itemBorderRadius: const BorderRadius.all(
-    Radius.circular(5.0),
-  ),
-  showTooltip: true,
-  showHamburger: true,
-  itemHeight: 50.0,
-  itemInnerSpacing: 8.0,
-  itemOuterPadding: const EdgeInsets.symmetric(horizontal: 5.0),
-  toggleColor: Colors.black54,
-
-  // Additional properties for expandable items
-  selectedTitleTextStyleExpandable: TextStyle(color: Colors.white), // Adjust the style as needed
-  unselectedTitleTextStyleExpandable: TextStyle(color: Colors.black54), // Adjust the style as needed
-  selectedIconColorExpandable: Colors.white, // Adjust the color as needed
-  unselectedIconColorExpandable: Colors.black54, // Adjust the color as needed
-  arrowCollapse: Colors.blueGrey, // Adjust the color as needed
-  arrowOpen: Colors.lightBlueAccent, // Adjust the color as needed
-  iconSizeExpandable: 24.0, // Adjust the size as needed
+SideMenuExpansionItem(
+  title: 'Projects',
+  icon: const Icon(Icons.folder_rounded),
+  initiallyExpanded: false,
+  children: [
+    SideMenuItem(
+      title: 'Active',
+      icon: const Icon(Icons.circle, size: 10),
+      onTap: (index, controller) => controller.goTo(index),
+    ),
+    SideMenuItem(
+      title: 'Archived',
+      icon: const Icon(Icons.circle_outlined, size: 10),
+      onTap: (index, controller) => controller.goTo(index),
+    ),
+  ],
 ),
 ```
-
-#### Style Example
-
-<details>
-<summary>Code</summary>
-
-```dart
-style: SideMenuStyle(
-  displayMode: SideMenuDisplayMode.auto,
-  hoverColor: Colors.blue[100],
-  selectedColor: Colors.blue[600],
-  selectedTitleTextStyle: TextStyle(color: Colors.white),
-  selectedIconColor: Colors.white,
-  unselectedIconColor: Colors.white70,
-  unselectedTitleTextStyle: TextStyle(color: Colors.white70),
-  showHamburger: false
-  decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-      boxShadow: [
-        BoxShadow(
-          color: Color.fromARGB(255, 79, 117, 134),
-          spreadRadius: 1,
-          blurRadius: 10,
-          offset: Offset(0, 0), // changes position of shadow
-        ),
-      ]),
-  backgroundColor: Color.fromARGB(255, 79, 117, 134),
-  // openSideMenuWidth: 200
-),
-```
-
-</details>
-
-![Open](images/Screenshot_style.png)
-
-#### Style Props
-| props                             | types          | description                                                                 |
-|-----------------------------------|----------------|-----------------------------------------------------------------------------|
-| displayMode                       | `SideMenuDisplayMode?` | SideMenuDisplayMode.auto, SideMenuDisplayMode.open, SideMenuDisplayMode.compact|
-| decoration                        | `BoxDecoration?`    | Decoration of `SideMenu` background (container)                            |
-| openSideMenuWidth                 | `double?`        | Width of `SideMenu` when displayMode was SideMenuDisplayMode.open          |
-| compactSideMenuWidth              | `double?`        | Width of `SideMenu` when displayMode was SideMenuDisplayMode.compact       |
-| hoverColor                        | `Color?`         | Color of `SideMenuItem` when mouse hover on that                           |
-| selectedColor                     | `Color?`         | Background color of `SideMenuItem` when item is selected                   |
-| selectedIconColor                 | `Color?`         | Color of icon when item is selected                                        |
-| unselectedIconColor               | `Color?`         | Color of icon when item is unselected                                      |
-| backgroundColor                   | `Color?`         | Background color of `SideMenu`                                             |
-| selectedTitleTextStyle            | `TextStyle?`     | Style of `title` text when item is selected                                |
-| unselectedTitleTextStyle          | `TextStyle?`     | Style of `title` text when item is unselected                              |
-| iconSize                          | `double?`        | Size of icon on `SideMenuItem`                                             |
-| toggleColor                       | `Color?`         | Color of toggle button                                                     |
-| itemBorderRadius                  | `BorderRadius`   | Border Radius of menu item                                                 |
-| showTooltip                       | `bool`           | Property that will show user itemName in Tooltip when they'll hover over the item|
-| itemInnerSpacing                  | `double`         | Inner spacing of menu item                                                 |
-| itemOuterPadding                  | `EdgeInsetsGeometry` | Outer padding of menu item                                              |
-| itemHeight                        | `double`         | Height of menu item                                                        |
-| showHamburger                     | `bool`           | Property that will show Hamburger on top-left corner if set as `true`      |
-| selectedTitleTextStyleExpandable  | `TextStyle?`     | Style of `title` text when item is selected in `SideMenuExpandableItem`    |
-| unselectedTitleTextStyleExpandable| `TextStyle?`     | Style of `title` text when item is unselected in `SideMenuExpandableItem`  |
-| selectedIconColorExpandable       | `Color?`         | Color of icon when item is selected in `SideMenuExpandableItem`            |
-| unselectedIconColorExpandable     | `Color?`         | Color of icon when item is unselected in `SideMenuExpandableItem`          |
-| arrowCollapse                     | `Color?`         | Color of arrow in collapsed state in `SideMenuExpandableItem`              |
-| arrowOpen                         | `Color?`         | Color of arrow in open state in `SideMenuExpandableItem`                   |
-| iconSizeExpandable                | `double?`        | Size of icon on `SideMenuExpandableItem`                                   |
-
-
-
-#### Thanks
-Special thanks to [aditya113141](https://github.com/aditya113141) for contributing and implementing `SideMenuExpansionItem`
-
 
 ---
 
-Feel free to fork this repository and send pull request 🏁👍
+## Controller
+
+`SideMenuController` extends `ChangeNotifier`:
+
+```dart
+final controller = SideMenuController(initialIndex: 0);
+
+// Navigate to an item
+controller.goTo(2);
+
+// Read the current index
+print(controller.currentIndex);
+
+// Listen for changes
+controller.addListener(() {
+  print('Selected: ${controller.currentIndex}');
+});
+
+// Always dispose
+controller.dispose();
+```
+
+---
+
+## Theming
+
+`SideMenuThemeData` is a Material 3 `ThemeExtension`. Register it once for the whole app, or pass it directly to a single `SideMenu`.
+
+### App-wide (recommended)
+
+```dart
+MaterialApp(
+  theme: ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+    useMaterial3: true,
+    extensions: const [
+      SideMenuThemeData(
+        openWidth: 260,
+        selectedColor: Color(0xFF2563EB),
+        selectedIconColor: Colors.white,
+        selectedTitleStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+      ),
+    ],
+  ),
+)
+```
+
+### Per-widget override
+
+```dart
+SideMenu(
+  controller: controller,
+  theme: const SideMenuThemeData(
+    displayMode: SideMenuDisplayMode.compact,
+    compactWidth: 72,
+  ),
+  items: [...],
+)
+```
+
+### `SideMenuThemeData` properties
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `displayMode` | `SideMenuDisplayMode` | `auto` | `auto` / `open` / `compact` |
+| `openWidth` | `double` | `300` | Width in open mode |
+| `compactWidth` | `double` | `70` | Width in compact mode |
+| `collapseWidth` | `double` | `600` | Screen width at which `auto` switches to compact |
+| `menuDecoration` | `BoxDecoration?` | `null` | Full decoration for the menu container (overrides `backgroundColor`) |
+| `backdropSigma` | `double?` | `null` | Blur sigma for glassmorphism — wraps the menu in `BackdropFilter` |
+| `backgroundColor` | `Color?` | `ColorScheme.surface` | Menu background (ignored when `menuDecoration` is set) |
+| `selectedItemDecoration` | `BoxDecoration?` | `null` | Full decoration for the selected item (overrides `selectedColor`) |
+| `selectedColor` | `Color?` | `ColorScheme.primaryContainer` | Selected item highlight |
+| `hoverColor` | `Color?` | `onSurface 8%` | Hover highlight |
+| `selectedHoverColor` | `Color?` | `primaryContainer 80%` | Hover colour when item is also selected |
+| `selectedIconColor` | `Color?` | `ColorScheme.onPrimaryContainer` | Icon colour when selected |
+| `unselectedIconColor` | `Color?` | `ColorScheme.onSurfaceVariant` | Icon colour when unselected |
+| `iconSize` | `double` | `24` | Icon size |
+| `selectedTitleStyle` | `TextStyle?` | `labelLarge / onPrimaryContainer` | Title text style when selected |
+| `unselectedTitleStyle` | `TextStyle?` | `labelLarge / onSurfaceVariant` | Title text style when unselected |
+| `itemHeight` | `double` | `50` | Item row height |
+| `itemBorderRadius` | `BorderRadius` | `circular(8)` | Item corner radius |
+| `itemOuterPadding` | `EdgeInsetsGeometry` | `symmetric(h: 5)` | Padding around each item |
+| `itemInnerSpacing` | `double` | `8` | Spacing between icon and title |
+| `showTooltip` | `bool` | `true` | Show item title as tooltip in compact mode |
+| `showHamburger` | `bool` | `false` | Show a hamburger button that collapses the menu |
+| `toggleColor` | `Color?` | `onSurfaceVariant` | Expand/collapse toggle icon colour |
+| `expansionArrowColor` | `Color?` | `onSurfaceVariant` | Expansion arrow in collapsed state |
+| `expansionArrowOpenColor` | `Color?` | `ColorScheme.primary` | Expansion arrow in open state |
+
+### `SideMenu` properties
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `controller` | `SideMenuController` | required | Manages the selected index |
+| `items` | `List<SideMenuItemBase>` | required | Items to display |
+| `theme` | `SideMenuThemeData?` | `null` | Per-widget theme override |
+| `title` | `Widget?` | `null` | Widget shown above items |
+| `footer` | `Widget?` | `null` | Widget pinned to the bottom |
+| `alwaysShowFooter` | `bool` | `false` | Keep footer visible in compact mode |
+| `showToggle` | `bool` | `false` | Show collapse/expand toggle button |
+| `collapseWidth` | `double` | `600` | Screen width threshold for auto mode |
+| `displayModeToggleDuration` | `Duration` | `350 ms` | Open ↔ compact animation duration |
+| `onDisplayModeChanged` | `ValueChanged<SideMenuDisplayMode>?` | `null` | Called when display mode changes |
+
+---
+
+## Advanced customisation
+
+### Gradient sidebar
+
+```dart
+SideMenu(
+  controller: controller,
+  theme: const SideMenuThemeData(
+    menuDecoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
+    selectedColor: Color(0x33FFFFFF),
+    selectedIconColor: Colors.white,
+  ),
+  items: [...],
+)
+```
+
+### Left-border selected indicator (Minimal style)
+
+```dart
+SideMenu(
+  controller: controller,
+  theme: const SideMenuThemeData(
+    selectedItemDecoration: BoxDecoration(
+      color: Color(0xFFEFF6FF),
+      border: Border(left: BorderSide(color: Color(0xFF2563EB), width: 3)),
+    ),
+    itemBorderRadius: BorderRadius.zero,
+    itemOuterPadding: EdgeInsets.zero,
+  ),
+  items: [...],
+)
+```
+
+### Glassmorphism
+
+Requires a `backdropSigma` and a semi-transparent `menuDecoration`. Place the `SideMenu` inside a widget that has a visible background (image, gradient) behind it.
+
+```dart
+// 1. Wrap the whole layout in a gradient container
+Container(
+  decoration: const BoxDecoration(
+    gradient: LinearGradient(
+      colors: [Color(0xFF1A1A2E), Color(0xFF0F3460)],
+    ),
+  ),
+  child: Row(
+    children: [
+      // 2. The SideMenu renders as a frosted panel
+      SideMenu(
+        controller: controller,
+        theme: SideMenuThemeData(
+          backdropSigma: 18,
+          menuDecoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.15),
+            border: Border(
+              right: BorderSide(color: Colors.white.withValues(alpha: 0.25)),
+            ),
+          ),
+          selectedIconColor: Colors.white,
+          unselectedIconColor: Colors.white70,
+        ),
+        items: [...],
+      ),
+      Expanded(child: ...),
+    ],
+  ),
+)
+```
+
+### Floating card (rounded + shadow)
+
+Wrap the `SideMenu` in a `Padding` and set `menuDecoration` with a `borderRadius` and `boxShadow`:
+
+```dart
+Row(
+  children: [
+    Padding(
+      padding: const EdgeInsets.all(8),
+      child: SideMenu(
+        controller: controller,
+        theme: SideMenuThemeData(
+          menuDecoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            border: Border.all(color: const Color(0xFFE2E8F0)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 24,
+                offset: const Offset(4, 0),
+              ),
+            ],
+          ),
+        ),
+        items: [...],
+      ),
+    ),
+    Expanded(child: ...),
+  ],
+)
+```
+
+---
+
+## Migrating from v0.7
+
+See [MIGRATION.md](MIGRATION.md) for a complete before/after guide covering every breaking change.
+
+Quick summary:
+
+| v0.7 | v1.0 |
+|---|---|
+| `SideMenuStyle(...)` | `SideMenuThemeData(...)` |
+| `style:` param on `SideMenu` | `theme:` param on `SideMenu` |
+| `openSideMenuWidth` | `openWidth` |
+| `compactSideMenuWidth` | `compactWidth` |
+| `controller.changePage(i)` | `controller.goTo(i)` |
+| `controller.currentPage` | `controller.currentIndex` |
+| `controller.addListener((i) {...})` | `controller.addListener(() { use controller.currentIndex })` |
+| `SideMenuItemType` | `SideMenuItemBase` |
+| `badgeContent:` | `badge:` |
+| `initialExpanded:` | `initiallyExpanded:` |
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome on [GitHub](https://github.com/Jamalianpour/easy_sidemenu).
+
+---
+
+## License
+
+MIT — see [LICENSE](https://github.com/Jamalianpour/easy_sidemenu/blob/master/LICENSE) for details.

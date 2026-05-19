@@ -1,3 +1,38 @@
+## [1.0.0]
+
+This is a full rewrite. See [MIGRATION.md](MIGRATION.md) for a step-by-step upgrade guide.
+
+### Breaking changes
+- **Minimum SDK**: Dart `>=3.4.0`, Flutter `>=3.22.0`
+- **`provider` removed**: no longer a transitive dependency
+- **`SideMenuStyle` removed**: replaced by `SideMenuThemeData` (a `ThemeExtension`)
+- **`SideMenuController`**: now extends `ChangeNotifier`; `changePage(i)` → `goTo(i)`, `currentPage` → `currentIndex`, stream-based listener removed
+- **`SideMenuItemType`** interface renamed to `SideMenuItemBase`
+- `SideMenuExpansionItem.initialExpanded` renamed to `initiallyExpanded`
+- `SideMenuItem.badgeContent` renamed to `badge`; `badgeColor` removed (style the badge widget directly)
+- Internal types `SideMenuItemWithGlobal`, `Global`, `DisplayModeNotifier` removed from public exports
+
+### New features
+- **`SideMenuThemeData`** is a full `ThemeExtension` — register once in `ThemeData.extensions` for app-wide defaults, or pass to `SideMenu.theme` per-widget
+- **`menuDecoration: BoxDecoration?`** — full decoration control (gradient, shadow, border) for the menu container
+- **`backdropSigma: double?`** — enables glassmorphism via `BackdropFilter`; wrap the menu in a transparent `menuDecoration` to see through to the background
+- **`selectedItemDecoration: BoxDecoration?`** — full decoration for the selected item (gradient pill, left-border indicator, glow)
+- **`SideMenuThemeData.resolve(context)`** — fills `null` fields from the ambient `ColorScheme`/`TextTheme` (Material 3)
+- `SideMenu.height` now stretches to available space (`double.infinity`) so the widget works correctly inside a `Padding` wrapper
+- Timers are properly cancelled on `dispose()` — no more widget-test timer leaks
+
+### Bug fixes
+- Compact width no longer resets after navigating away and returning (#46)
+- All `SideMenuExpansionItem` children receive correct stable flat indices via `SideMenuItemIndex` `InheritedWidget`
+
+### Other
+- `provider` dependency dropped entirely
+- Architecture rewritten: `SideMenuScope` (`InheritedNotifier`) replaces `provider` globals
+- 25 unit + widget tests added; GitHub Actions CI pipeline added
+- `MIGRATION.md` documents every breaking change with before/after examples
+
+---
+
 ## [0.7.1]
 * Fix: Preserve menu state on hot reload [#89](https://github.com/Jamalianpour/easy_sidemenu/pull/89)
 * Fix: export side_menu_item_type [#90](https://github.com/Jamalianpour/easy_sidemenu/pull/90)

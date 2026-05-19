@@ -141,7 +141,10 @@ void main() {
         ),
       )));
       await tester.pumpAndSettle();
-      final width = tester.getSize(find.byType(AnimatedContainer)).width;
+      // .first = the outermost AnimatedContainer (the menu itself); inner ones
+      // belong to SideMenuItem hover decorations.
+      final width =
+          tester.getSize(find.byType(AnimatedContainer).first).width;
       expect(width, compactWidth);
     });
 
@@ -156,7 +159,8 @@ void main() {
         ),
       )));
       await tester.pumpAndSettle();
-      final width = tester.getSize(find.byType(AnimatedContainer)).width;
+      final width =
+          tester.getSize(find.byType(AnimatedContainer).first).width;
       expect(width, openWidth);
     });
 
@@ -172,7 +176,8 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      final w1 = tester.getSize(find.byType(AnimatedContainer)).width;
+      final w1 =
+          tester.getSize(find.byType(AnimatedContainer).first).width;
       expect(w1, compactWidth);
 
       await tester.tap(find.byType(SideMenuItem).first);
@@ -180,7 +185,8 @@ void main() {
       await tester.tap(find.byType(ElevatedButton));
       await tester.pumpAndSettle();
 
-      final w2 = tester.getSize(find.byType(AnimatedContainer)).width;
+      final w2 =
+          tester.getSize(find.byType(AnimatedContainer).first).width;
       expect(w2, compactWidth);
 
       await tester.pumpWidget(const Placeholder());
@@ -283,6 +289,8 @@ void main() {
         ),
       ));
       await tester.pumpAndSettle();
+      // Drain the showTrailing Future.delayed(350ms) so no timer leaks.
+      await tester.pump(const Duration(milliseconds: 400));
       expect(modes, contains(SideMenuDisplayMode.open));
     });
   });

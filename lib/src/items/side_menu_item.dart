@@ -67,15 +67,19 @@ class SideMenuItem extends SideMenuItemBase {
 class _SideMenuItemState extends State<SideMenuItem> {
   bool _hovered = false;
 
-  Color _backgroundColor(SideMenuThemeData theme, bool selected) {
-    if (selected && _hovered) {
-      return theme.selectedHoverColor ??
-          theme.selectedColor ??
-          Colors.transparent;
+  BoxDecoration _itemDecoration(SideMenuThemeData theme, bool selected) {
+    if (selected && theme.selectedItemDecoration != null) {
+      return theme.selectedItemDecoration!;
     }
-    if (selected) return theme.selectedColor ?? Colors.transparent;
-    if (_hovered) return theme.hoverColor ?? Colors.transparent;
-    return Colors.transparent;
+    final color = switch ((selected, _hovered)) {
+      (true, true) => theme.selectedHoverColor ??
+          theme.selectedColor ??
+          Colors.transparent,
+      (true, false) => theme.selectedColor ?? Colors.transparent,
+      (false, true) => theme.hoverColor ?? Colors.transparent,
+      _ => Colors.transparent,
+    };
+    return BoxDecoration(color: color, borderRadius: theme.itemBorderRadius);
   }
 
   Widget _buildIcon(SideMenuThemeData theme, bool selected) {
@@ -145,10 +149,7 @@ class _SideMenuItemState extends State<SideMenuItem> {
                     duration: const Duration(milliseconds: 200),
                     height: theme.itemHeight,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: _backgroundColor(theme, selected),
-                      borderRadius: theme.itemBorderRadius,
-                    ),
+                    decoration: _itemDecoration(theme, selected),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: theme.itemInnerSpacing),

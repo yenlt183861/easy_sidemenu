@@ -1,3 +1,6 @@
+import 'dart:async' show Timer;
+import 'dart:ui' show ImageFilter;
+
 import 'package:flutter/material.dart';
 
 import 'controller/side_menu_controller.dart';
@@ -90,6 +93,8 @@ class _SideMenuState extends State<SideMenu> {
   late SideMenuScopeData _scope;
   SideMenuHamburgerMode _hamburger = SideMenuHamburgerMode.open;
   bool _animating = false;
+  Timer? _showTrailingTimer;
+  Timer? _animatingTimer;
 
   @override
   void initState() {
@@ -135,8 +140,9 @@ class _SideMenuState extends State<SideMenu> {
   void _applyMode(SideMenuDisplayMode mode) {
     if (_scope.displayMode == mode) return;
     _scope.displayMode = mode;
+    _showTrailingTimer?.cancel();
     if (mode == SideMenuDisplayMode.open) {
-      Future.delayed(widget.displayModeToggleDuration, () {
+      _showTrailingTimer = Timer(widget.displayModeToggleDuration, () {
         if (mounted) _scope.showTrailing = true;
       });
     } else {
@@ -159,7 +165,8 @@ class _SideMenuState extends State<SideMenu> {
         ? SideMenuDisplayMode.compact
         : SideMenuDisplayMode.open;
     setState(() => _animating = true);
-    Future.delayed(widget.displayModeToggleDuration,
+    _animatingTimer?.cancel();
+    _animatingTimer = Timer(widget.displayModeToggleDuration,
         () => setState(() => _animating = false));
     _scope.theme = _scope.theme.copyWith(displayMode: next);
     _applyMode(next);
@@ -190,46 +197,56 @@ class _SideMenuState extends State<SideMenu> {
       );
     }
 
-    return SideMenuScope(
-      notifier: _scope,
-      child: AnimatedContainer(
-        duration: widget.displayModeToggleDuration,
-        width: _menuWidth,
-        height: MediaQuery.sizeOf(context).height,
-        decoration: BoxDecoration(
-          color: theme.backgroundColor ??
-              Theme.of(context).colorScheme.surface,
-        ),
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (theme.showHamburger) hamburgerButton,
-                  if (isCompact && widget.showToggle)
-                    const SizedBox(height: 42),
-                  if (widget.title != null) widget.title!,
-                  ..._buildItems(),
-                ],
-              ),
+    final menuContent = AnimatedContainer(
+      duration: widget.displayModeToggleDuration,
+      width: _menuWidth,
+      height: double.infinity,
+      decoration: theme.menuDecoration ??
+          BoxDecoration(
+            color: theme.backgroundColor ??
+                Theme.of(context).colorScheme.surface,
+          ),
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (theme.showHamburger) hamburgerButton,
+                if (isCompact && widget.showToggle)
+                  const SizedBox(height: 42),
+                if (widget.title != null) widget.title!,
+                ..._buildItems(),
+              ],
             ),
-            if (widget.footer != null &&
-                (!isCompact || widget.alwaysShowFooter))
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: widget.footer!,
-              ),
-            if (theme.displayMode != SideMenuDisplayMode.auto &&
-                widget.showToggle)
-              Align(
-                alignment: AlignmentDirectional.topEnd,
-                child: SideMenuToggle(onTap: _onToggleTap),
-              ),
-          ],
-        ),
+          ),
+          if (widget.footer != null &&
+              (!isCompact || widget.alwaysShowFooter))
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: widget.footer!,
+            ),
+          if (theme.displayMode != SideMenuDisplayMode.auto &&
+              widget.showToggle)
+            Align(
+              alignment: AlignmentDirectional.topEnd,
+              child: SideMenuToggle(onTap: _onToggleTap),
+            ),
+        ],
       ),
     );
+
+    final sigma = theme.backdropSigma;
+    final menu = sigma != null
+        ? ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
+              child: menuContent,
+            ),
+          )
+        : menuContent;
+
+    return SideMenuScope(notifier: _scope, child: menu);
   }
 
   /// Wraps each item with its flat selectable index.
@@ -251,6 +268,8 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   void dispose() {
+    _showTrailingTimer?.cancel();
+    _animatingTimer?.cancel();
     _scope.dispose();
     super.dispose();
   }
