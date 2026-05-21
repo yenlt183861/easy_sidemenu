@@ -55,8 +55,9 @@ class _SideMenuExpansionItemState extends State<SideMenuExpansionItem> {
   late bool _expanded = widget.initiallyExpanded;
 
   Widget _buildIcon(SideMenuThemeData theme) {
-    if (widget.icon == null)
+    if (widget.icon == null) {
       return widget.iconWidget ?? const SizedBox.shrink();
+    }
     final color = _expanded
         ? theme.selectedIconColor ?? Colors.black
         : theme.unselectedIconColor ?? Colors.black54;
