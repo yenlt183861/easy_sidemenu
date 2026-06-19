@@ -194,8 +194,7 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
       menuDecoration: menuDecoration ?? this.menuDecoration,
       backdropSigma: backdropSigma ?? this.backdropSigma,
       backgroundColor: backgroundColor ?? this.backgroundColor,
-      selectedItemDecoration:
-          selectedItemDecoration ?? this.selectedItemDecoration,
+      selectedItemDecoration: selectedItemDecoration ?? this.selectedItemDecoration,
       selectedColor: selectedColor ?? this.selectedColor,
       hoverColor: hoverColor ?? this.hoverColor,
       selectedHoverColor: selectedHoverColor ?? this.selectedHoverColor,
@@ -212,8 +211,7 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
       showHamburger: showHamburger ?? this.showHamburger,
       toggleColor: toggleColor ?? this.toggleColor,
       expansionArrowColor: expansionArrowColor ?? this.expansionArrowColor,
-      expansionArrowOpenColor:
-          expansionArrowOpenColor ?? this.expansionArrowOpenColor,
+      expansionArrowOpenColor: expansionArrowOpenColor ?? this.expansionArrowOpenColor,
     );
   }
 
@@ -225,37 +223,27 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
       openWidth: lerpDouble(openWidth, other.openWidth, t)!,
       compactWidth: lerpDouble(compactWidth, other.compactWidth, t)!,
       collapseWidth: lerpDouble(collapseWidth, other.collapseWidth, t)!,
-      menuDecoration:
-          BoxDecoration.lerp(menuDecoration, other.menuDecoration, t),
+      menuDecoration: BoxDecoration.lerp(menuDecoration, other.menuDecoration, t),
       backdropSigma: lerpDouble(backdropSigma, other.backdropSigma, t),
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
-      selectedItemDecoration: BoxDecoration.lerp(
-          selectedItemDecoration, other.selectedItemDecoration, t),
+      selectedItemDecoration:
+          BoxDecoration.lerp(selectedItemDecoration, other.selectedItemDecoration, t),
       selectedColor: Color.lerp(selectedColor, other.selectedColor, t),
       hoverColor: Color.lerp(hoverColor, other.hoverColor, t),
-      selectedHoverColor:
-          Color.lerp(selectedHoverColor, other.selectedHoverColor, t),
-      selectedIconColor:
-          Color.lerp(selectedIconColor, other.selectedIconColor, t),
-      unselectedIconColor:
-          Color.lerp(unselectedIconColor, other.unselectedIconColor, t),
+      selectedHoverColor: Color.lerp(selectedHoverColor, other.selectedHoverColor, t),
+      selectedIconColor: Color.lerp(selectedIconColor, other.selectedIconColor, t),
+      unselectedIconColor: Color.lerp(unselectedIconColor, other.unselectedIconColor, t),
       iconSize: lerpDouble(iconSize, other.iconSize, t)!,
-      selectedTitleStyle:
-          TextStyle.lerp(selectedTitleStyle, other.selectedTitleStyle, t),
-      unselectedTitleStyle:
-          TextStyle.lerp(unselectedTitleStyle, other.unselectedTitleStyle, t),
+      selectedTitleStyle: TextStyle.lerp(selectedTitleStyle, other.selectedTitleStyle, t),
+      unselectedTitleStyle: TextStyle.lerp(unselectedTitleStyle, other.unselectedTitleStyle, t),
       itemHeight: lerpDouble(itemHeight, other.itemHeight, t)!,
-      itemBorderRadius:
-          BorderRadius.lerp(itemBorderRadius, other.itemBorderRadius, t)!,
-      itemOuterPadding:
-          EdgeInsetsGeometry.lerp(itemOuterPadding, other.itemOuterPadding, t)!,
-      itemInnerSpacing:
-          lerpDouble(itemInnerSpacing, other.itemInnerSpacing, t)!,
+      itemBorderRadius: BorderRadius.lerp(itemBorderRadius, other.itemBorderRadius, t)!,
+      itemOuterPadding: EdgeInsetsGeometry.lerp(itemOuterPadding, other.itemOuterPadding, t)!,
+      itemInnerSpacing: lerpDouble(itemInnerSpacing, other.itemInnerSpacing, t)!,
       showTooltip: t < 0.5 ? showTooltip : other.showTooltip,
       showHamburger: t < 0.5 ? showHamburger : other.showHamburger,
       toggleColor: Color.lerp(toggleColor, other.toggleColor, t),
-      expansionArrowColor:
-          Color.lerp(expansionArrowColor, other.expansionArrowColor, t),
+      expansionArrowColor: Color.lerp(expansionArrowColor, other.expansionArrowColor, t),
       expansionArrowOpenColor:
           Color.lerp(expansionArrowOpenColor, other.expansionArrowOpenColor, t),
     );
@@ -269,15 +257,14 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
     return copyWith(
       backgroundColor: backgroundColor ?? cs.surface,
       selectedColor: selectedColor ?? cs.primaryContainer,
-      hoverColor: hoverColor ?? cs.onSurface.withValues(alpha: 0.08),
-      selectedHoverColor:
-          selectedHoverColor ?? cs.primaryContainer.withValues(alpha: 0.8),
+      hoverColor: hoverColor ?? cs.onSurface.withOpacity(0.08),
+      selectedHoverColor: selectedHoverColor ?? cs.primaryContainer.withOpacity(0.8),
       selectedIconColor: selectedIconColor ?? cs.onPrimaryContainer,
       unselectedIconColor: unselectedIconColor ?? cs.onSurfaceVariant,
-      selectedTitleStyle: selectedTitleStyle ??
-          tt.labelLarge?.copyWith(color: cs.onPrimaryContainer),
-      unselectedTitleStyle: unselectedTitleStyle ??
-          tt.labelLarge?.copyWith(color: cs.onSurfaceVariant),
+      selectedTitleStyle:
+          selectedTitleStyle ?? tt.labelLarge?.copyWith(color: cs.onPrimaryContainer),
+      unselectedTitleStyle:
+          unselectedTitleStyle ?? tt.labelLarge?.copyWith(color: cs.onSurfaceVariant),
       toggleColor: toggleColor ?? cs.onSurfaceVariant,
       expansionArrowColor: expansionArrowColor ?? cs.onSurfaceVariant,
       expansionArrowOpenColor: expansionArrowOpenColor ?? cs.primary,
@@ -287,8 +274,7 @@ class SideMenuThemeData extends ThemeExtension<SideMenuThemeData> {
   /// Returns the [SideMenuThemeData] from the nearest [Theme] extension,
   /// or a default instance if none is registered.
   static SideMenuThemeData of(BuildContext context) {
-    return Theme.of(context).extension<SideMenuThemeData>() ??
-        const SideMenuThemeData();
+    return Theme.of(context).extension<SideMenuThemeData>() ?? const SideMenuThemeData();
   }
 
   @override

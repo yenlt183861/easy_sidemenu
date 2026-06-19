@@ -38,13 +38,12 @@ final _glassPreset = _Preset(
     compactWidth: 68,
     backdropSigma: 18,
     menuDecoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: 0.18),
+      color: Colors.white.withOpacity(0.18),
       border: Border(
-        right:
-            BorderSide(color: Colors.white.withValues(alpha: 0.30), width: 1),
+        right: BorderSide(color: Colors.white.withOpacity(0.30), width: 1),
       ),
     ),
-    selectedColor: Colors.white.withValues(alpha: 0.30),
+    selectedColor: Colors.white.withOpacity(0.30),
     selectedIconColor: Colors.white,
     selectedTitleStyle: const TextStyle(
       color: Colors.white,
@@ -53,7 +52,7 @@ final _glassPreset = _Preset(
     ),
     unselectedIconColor: Colors.white70,
     unselectedTitleStyle: const TextStyle(color: Colors.white70, fontSize: 15),
-    hoverColor: Colors.white.withValues(alpha: 0.12),
+    hoverColor: Colors.white.withOpacity(0.12),
     itemBorderRadius: const BorderRadius.all(Radius.circular(10)),
     itemOuterPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
     toggleColor: Colors.white70,
@@ -81,18 +80,16 @@ final _frozenPreset = _Preset(
     compactWidth: 68,
     backdropSigma: 24,
     menuDecoration: BoxDecoration(
-      color: const Color(0xFFE8F4FD).withValues(alpha: 0.22),
+      color: const Color(0xFFE8F4FD).withOpacity(0.22),
       border: Border(
-        right: BorderSide(
-            color: const Color(0xFFB3D9F2).withValues(alpha: 0.50), width: 1),
+        right: BorderSide(color: const Color(0xFFB3D9F2).withOpacity(0.50), width: 1),
       ),
     ),
-    selectedColor: const Color(0xFF2196F3).withValues(alpha: 0.25),
+    selectedColor: const Color(0xFF2196F3).withOpacity(0.25),
     selectedItemDecoration: BoxDecoration(
-      color: const Color(0xFF2196F3).withValues(alpha: 0.20),
+      color: const Color(0xFF2196F3).withOpacity(0.20),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
-      border: Border.all(
-          color: const Color(0xFF2196F3).withValues(alpha: 0.50), width: 1),
+      border: Border.all(color: const Color(0xFF2196F3).withOpacity(0.50), width: 1),
     ),
     selectedIconColor: const Color(0xFF0D47A1),
     selectedTitleStyle: const TextStyle(
@@ -101,9 +98,8 @@ final _frozenPreset = _Preset(
       fontSize: 15,
     ),
     unselectedIconColor: const Color(0xFF546E7A),
-    unselectedTitleStyle:
-        const TextStyle(color: Color(0xFF546E7A), fontSize: 15),
-    hoverColor: const Color(0xFF90CAF9).withValues(alpha: 0.20),
+    unselectedTitleStyle: const TextStyle(color: Color(0xFF546E7A), fontSize: 15),
+    hoverColor: const Color(0xFF90CAF9).withOpacity(0.20),
     itemBorderRadius: const BorderRadius.all(Radius.circular(10)),
     itemOuterPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
     toggleColor: const Color(0xFF546E7A),
@@ -132,7 +128,7 @@ final _cardPreset = _Preset(
       border: Border.all(color: const Color(0xFFE2E8F0)),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.08),
+          color: Colors.black.withOpacity(0.08),
           blurRadius: 24,
           spreadRadius: 0,
           offset: const Offset(4, 0),
@@ -151,8 +147,7 @@ final _cardPreset = _Preset(
       fontSize: 15,
     ),
     unselectedIconColor: const Color(0xFF64748B),
-    unselectedTitleStyle:
-        const TextStyle(color: Color(0xFF64748B), fontSize: 15),
+    unselectedTitleStyle: const TextStyle(color: Color(0xFF64748B), fontSize: 15),
     hoverColor: const Color(0xFFF8FAFC),
     itemBorderRadius: const BorderRadius.all(Radius.circular(10)),
     itemOuterPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -310,9 +305,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final preset = _presets[_presetIndex];
-    final isDark = preset.label == 'Midnight' ||
-        preset.label == 'Aurora' ||
-        preset.label == 'Glass';
+    final isDark =
+        preset.label == 'Midnight' || preset.label == 'Aurora' || preset.label == 'Glass';
     final isCard = preset.label == 'Card';
 
     Widget sideMenuWidget = SideMenu(
@@ -322,16 +316,14 @@ class _HomePageState extends State<HomePage> {
       title: _SideMenuHeader(
         presetLabel: preset.label,
         isDark: isDark,
-        onNext: () =>
-            setState(() => _presetIndex = (_presetIndex + 1) % _presets.length),
+        onNext: () => setState(() => _presetIndex = (_presetIndex + 1) % _presets.length),
       ),
       footer: isCard ? const _CardFooter() : _SideMenuFooter(isDark: isDark),
       items: [
         SideMenuItem(
           title: 'Dashboard',
           icon: const Icon(Icons.dashboard_rounded),
-          badge: const Text('3',
-              style: TextStyle(color: Colors.white, fontSize: 10)),
+          badge: const Text('3', style: TextStyle(color: Colors.white, fontSize: 10)),
           tooltipContent: 'Dashboard',
           onTap: (i, c) => c.goTo(i),
         ),
@@ -365,8 +357,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.all(Radius.circular(6)),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            child: const Text('New',
-                style: TextStyle(fontSize: 10, color: Colors.white)),
+            child: const Text('New', style: TextStyle(fontSize: 10, color: Colors.white)),
           ),
           onTap: (i, c) => c.goTo(i),
         ),
@@ -389,8 +380,7 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (preset.outerPadding != null) {
-      sideMenuWidget =
-          Padding(padding: preset.outerPadding!, child: sideMenuWidget);
+      sideMenuWidget = Padding(padding: preset.outerPadding!, child: sideMenuWidget);
     }
 
     final body = Row(
@@ -499,10 +489,7 @@ class _SideMenuFooter extends StatelessWidget {
             radius: 16,
             backgroundColor: Color(0xFF2563EB),
             child: Text('M',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold)),
+                style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -519,9 +506,7 @@ class _SideMenuFooter extends StatelessWidget {
                 Text('Admin',
                     style: TextStyle(
                         fontSize: 11,
-                        color: isDark
-                            ? const Color(0xFF94A3B8)
-                            : Colors.grey.shade600)),
+                        color: isDark ? const Color(0xFF94A3B8) : Colors.grey.shade600)),
               ],
             ),
           ),
@@ -577,9 +562,7 @@ class _CardFooter extends StatelessWidget {
                   backgroundColor: Color(0xFF2563EB),
                   child: Text('M',
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold)),
+                          color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
                 ),
                 SizedBox(width: 8),
                 Expanded(
@@ -589,18 +572,13 @@ class _CardFooter extends StatelessWidget {
                     children: [
                       Text('Mohammad',
                           style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF1E293B)),
+                              fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF1E293B)),
                           overflow: TextOverflow.ellipsis),
-                      Text('Pro Plan',
-                          style: TextStyle(
-                              fontSize: 10, color: Color(0xFF64748B))),
+                      Text('Pro Plan', style: TextStyle(fontSize: 10, color: Color(0xFF64748B))),
                     ],
                   ),
                 ),
-                Icon(Icons.unfold_more_rounded,
-                    size: 16, color: Color(0xFF94A3B8)),
+                Icon(Icons.unfold_more_rounded, size: 16, color: Color(0xFF94A3B8)),
               ],
             ),
           ),
@@ -611,8 +589,7 @@ class _CardFooter extends StatelessWidget {
 }
 
 class _CardAction extends StatelessWidget {
-  const _CardAction(
-      {required this.icon, required this.label, required this.color});
+  const _CardAction({required this.icon, required this.label, required this.color});
   final IconData icon;
   final String label;
   final Color color;
@@ -628,8 +605,7 @@ class _CardAction extends StatelessWidget {
           children: [
             Icon(icon, size: 17, color: color),
             const SizedBox(width: 10),
-            Text(label,
-                style: const TextStyle(fontSize: 13, color: Color(0xFF475569))),
+            Text(label, style: const TextStyle(fontSize: 13, color: Color(0xFF475569))),
           ],
         ),
       ),
@@ -654,9 +630,7 @@ class _Page extends StatelessWidget {
           const SizedBox(height: 16),
           Text(label,
               style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.grey.shade600)),
+                  fontSize: 28, fontWeight: FontWeight.w300, color: Colors.grey.shade600)),
         ],
       ),
     );
